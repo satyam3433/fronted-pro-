@@ -1,6 +1,6 @@
-# DineSync Frontend
+# DineSync Interactive Demo
 
-This repository contains only the React user interface for DineSync. It does not contain the Express API or database. Login, floor data, orders, and billing require the separate backend.
+This is a frontend-only, interactive DineSync demo. It uses sample data and stores changes in the current browser's local storage; it does not connect to a backend or persist data across browsers.
 
 ## Stack
 
@@ -10,6 +10,17 @@ This repository contains only the React user interface for DineSync. It does not
 - esbuild
 - Node.js 20+
 
+## Demo sign-in
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | `admin@dinesync.demo` | `DineSyncDemo!2026` |
+| Captain | `captain@dinesync.demo` | `DineSyncCaptain!2026` |
+
+Use the buttons on the sign-in page to fill either account. Admin can manage tables and export the sample data; Captain can run orders and checkout. Use **Reset demo data** on the sign-in page to restore the starter floor in this browser.
+
+The demo supports adding/editing/deleting tables, orders, itemized bills, food and beverage GST, service charges, table transfers, checkout, cleanup, and dashboard analytics.
+
 ## Build
 
 ```sh
@@ -17,13 +28,18 @@ npm ci
 npm run build
 ```
 
-The static site is generated in `frontend/dist`.
+The static site is generated in `frontend/dist`. To build with a subpath base for GitHub Pages:
 
-## Deploy on Vercel
+```sh
+BASE_PATH=/fronted-pro-/ npm run build
+```
 
-1. Deploy the backend from the [DineSync backend repository](https://github.com/satyam3433/-DINESYNC-PRO-) to a Node.js host with persistent storage.
-2. In `vercel.json`, replace `REPLACE-WITH-YOUR-RENDER-SERVICE` with the deployed Render service hostname, without `https://`.
-3. Import this repository into Vercel. Use the repository root, build command `npm run build`, and output directory `frontend/dist`.
-4. Deploy and sign in using the Admin or Captain credentials configured on the backend.
+On Windows PowerShell, use `$env:BASE_PATH = "/fronted-pro-/"` before `npm run build`.
 
-The `/api` rewrite keeps API requests on the Vercel origin so the backend's HttpOnly session cookie works with the frontend. The placeholder API hostname must be replaced before using the app.
+## Deploy on GitHub Pages
+
+The included GitHub Actions workflow builds the static site and deploys it to GitHub Pages on each push to `main`. If Pages is not enabled for the repository, open **Settings → Pages**, select **GitHub Actions** as the build and deployment source, and rerun the workflow.
+
+The demo site URL is `https://satyam3433.github.io/fronted-pro-/` once the Pages workflow completes. The same static build can also be deployed to Vercel using build command `npm run build` and output directory `frontend/dist`.
+
+This demo is for preview only. It has no production authentication or server-side database.
