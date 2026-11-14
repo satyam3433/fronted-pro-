@@ -28,18 +28,12 @@ npm ci
 npm run build
 ```
 
-The static site is generated in `frontend/dist`. To build with a subpath base for GitHub Pages:
+The static site is generated in `frontend/dist`.
 
-```sh
-BASE_PATH=/fronted-pro-/ npm run build
-```
+## Deploy on Vercel
 
-On Windows PowerShell, use `$env:BASE_PATH = "/fronted-pro-/"` before `npm run build`.
-
-## Deploy on GitHub Pages
-
-The included GitHub Actions workflow builds the static site and deploys it to GitHub Pages on each push to `main`. If Pages is not enabled for the repository, open **Settings → Pages**, select **GitHub Actions** as the build and deployment source, and rerun the workflow.
-
-The demo site URL is `https://satyam3433.github.io/fronted-pro-/` once the Pages workflow completes. The same static build can also be deployed to Vercel using build command `npm run build` and output directory `frontend/dist`.
+1. Import [the `fronted-pro-` GitHub repository](https://github.com/satyam3433/fronted-pro-) into Vercel.
+2. Set the project root to the repository root, build command to `npm run build`, and output directory to `frontend/dist`. Vercel can use the included `vercel.json` for these settings.
+3. Deploy. No environment variables or backend URL are needed for this demo.
 
 This demo is for preview only. It has no production authentication or server-side database.

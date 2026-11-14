@@ -5,7 +5,6 @@ const esbuild = require("esbuild");
 const ROOT = path.resolve(__dirname, "..");
 const FRONTEND = path.join(ROOT, "frontend");
 const DIST = path.join(FRONTEND, "dist");
-const BASE_PATH = `/${String(process.env.BASE_PATH || "").replace(/^\/+|\/+$/g, "")}/`.replace(/^\/\/$/, "/");
 
 async function createFrontendContext({ watch = false } = {}) {
   const assets = path.join(DIST, "assets");
@@ -24,9 +23,7 @@ async function createFrontendContext({ watch = false } = {}) {
     logLevel: "info"
   });
   await context.rebuild();
-  const html = fs.readFileSync(path.join(FRONTEND, "index.html"), "utf8")
-    .replace(/(src|href)="\/assets\//g, (_, attribute) => `${attribute}="${BASE_PATH}assets/`);
-  fs.writeFileSync(path.join(DIST, "index.html"), html);
+  fs.copyFileSync(path.join(FRONTEND, "index.html"), path.join(DIST, "index.html"));
   if (watch) await context.watch();
   return context;
 }
