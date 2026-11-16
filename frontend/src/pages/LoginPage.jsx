@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail, Utensils } from "lucide-react";
-import { Link } from "react-router-dom";
-import { resetDemoData } from "../api.js";
 import { useAuth } from "../context/AuthContext.jsx";
-
-const DEMO_ACCOUNTS = [
-  { role: "Admin", email: "admin@dinesync.demo", password: "DineSyncDemo!2026" },
-  { role: "Captain", email: "captain@dinesync.demo", password: "DineSyncCaptain!2026" }
-];
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -16,12 +9,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  function chooseDemo(account) {
-    setEmail(account.email);
-    setPassword(account.password);
-    setError("");
-  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -39,15 +26,15 @@ export default function LoginPage() {
   return (
     <main className="login-page">
       <section className="login-story">
-        <Link className="brand login-brand" to="/" aria-label="DineSync home">
+        <a className="brand login-brand" href="/" aria-label="DineSync home">
           <span className="brand-mark">d</span>
           <span className="brand-copy">
             <span className="brand-name">dinesync</span>
             <span className="brand-subtitle">RESTAURANT OPS</span>
           </span>
-        </Link>
+        </a>
         <div className="login-story-content">
-        <div className="login-story-badge"><span className="online-dot" /> INTERACTIVE DEMO</div>
+          <div className="login-story-badge"><span className="online-dot" /> SERVICE DESK · LIVE</div>
           <h1>Make every<br /><em>service feel</em><br />in sync.</h1>
           <p>One calm workspace to keep your floor moving, your team aligned, and every bill in balance.</p>
           <div className="login-story-stats">
@@ -66,16 +53,7 @@ export default function LoginPage() {
           <div className="login-heading-icon"><Utensils size={18} /></div>
           <div className="eyebrow">WELCOME BACK</div>
           <h2>Sign in to your workspace</h2>
-          <p className="login-subtitle">Choose a demo role to explore the restaurant workspace.</p>
-          <div className="demo-accounts" aria-label="Demo accounts">
-            {DEMO_ACCOUNTS.map(account => (
-              <button className="demo-account" type="button" key={account.role} onClick={() => chooseDemo(account)}>
-                <strong>{account.role} demo</strong>
-                <span>{account.email}</span>
-                <small>{account.password}</small>
-              </button>
-            ))}
-          </div>
+          <p className="login-subtitle">Sign in with your restaurant account to continue.</p>
           <form className="login-form" onSubmit={handleSubmit}>
             <label className="login-field">
               <span>Email address</span>
@@ -88,9 +66,9 @@ export default function LoginPage() {
             {error && <div className="login-error" role="alert">{error}</div>}
             <button className="button button-primary login-submit" type="submit" disabled={submitting}>{submitting ? "Signing in…" : "Sign in"} {!submitting && <ArrowRight size={16} />}</button>
           </form>
-          <div className="login-security"><LockKeyhole size={13} /><span>Demo mode · changes are saved in this browser only.</span></div>
+          <div className="login-security"><LockKeyhole size={13} /><span>Your session is protected with secure, httpOnly authentication.</span></div>
         </div>
-        <button className="demo-reset" type="button" onClick={() => { resetDemoData(); setEmail(""); setPassword(""); setError(""); }}>Reset demo data</button>
+        <p className="login-support">Need access? Contact your restaurant administrator.</p>
       </section>
     </main>
   );

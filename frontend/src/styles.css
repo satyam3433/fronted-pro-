@@ -192,11 +192,6 @@ h1 { margin: 7px 0 0; font: 800 clamp(23px, 2.4vw, 29px) Manrope, sans-serif; le
 .login-card .eyebrow { font-size: 9px; letter-spacing: 1.4px; }
 .login-card h2 { margin: 8px 0 7px; color: #24352b; font: 800 24px/1.3 Manrope, sans-serif; letter-spacing: -.8px; }
 .login-subtitle { margin: 0; color: #879189; font-size: 12px; }
-.demo-accounts { display: grid; gap: 7px; margin-top: 16px; }
-.demo-account { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid #e8ece6; border-radius: 8px; background: #fbfcfa; color: #46534b; text-align: left; }
-.demo-account:hover { border-color: #b7cdbb; background: #f5f8f4; }
-.demo-account strong { font-size: 10px; }
-.demo-account span, .demo-account small { color: #849087; font-size: 9px; }
 .login-form { display: grid; gap: 17px; margin-top: 29px; }
 .login-field { display: grid; gap: 7px; color: #455249; font-size: 11px; font-weight: 600; }
 .login-input-wrap { height: 43px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid #e5e9e3; border-radius: 8px; color: #9aa39c; transition: border-color .15s, box-shadow .15s; }
@@ -208,9 +203,7 @@ h1 { margin: 7px 0 0; font: 800 clamp(23px, 2.4vw, 29px) Manrope, sans-serif; le
 .login-submit { width: 100%; min-height: 43px; justify-content: space-between; margin-top: 3px; padding: 0 15px; }
 .login-security { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 20px; color: #8b958d; font-size: 9px; }
 .login-security svg { flex: 0 0 auto; color: #70927a; }
-.demo-reset { margin-top: 18px; padding: 5px 8px; border: 0; background: transparent; color: #879189; font-size: 10px; text-decoration: underline; }
-.demo-reset:hover { color: var(--green-dark); }
-.login-support { margin: 20px 0 0; color: #9aa29b; font-size: 10px; }
+.login-support { margin: 48px 0 0; color: #9aa29b; font-size: 10px; }
 .login-mobile-brand { display: none; }
 
 @media (max-width: 1120px) {

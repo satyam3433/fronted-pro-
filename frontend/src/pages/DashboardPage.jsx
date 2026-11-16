@@ -4,7 +4,6 @@ import {
   ClipboardList, LayoutDashboard, LogOut, Pencil, Plus, Sparkles,
   Trash2, Users, Utensils, X
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { api, formatMoney } from "../api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
@@ -299,8 +298,12 @@ export default function DashboardPage() {
 
   async function exportDatabase() {
     try {
-      const data = await api("/export");
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const response = await fetch("/api/export", { credentials: "same-origin" });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Export could not be downloaded.");
+      }
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -326,7 +329,7 @@ export default function DashboardPage() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <Link className="brand" to="/" aria-label="DineSync home"><span className="brand-mark">d</span><span className="brand-copy"><span className="brand-name">dinesync</span><span className="brand-subtitle">RESTAURANT OPS</span></span></Link>
+        <a className="brand" href="/" aria-label="DineSync home"><span className="brand-mark">d</span><span className="brand-copy"><span className="brand-name">dinesync</span><span className="brand-subtitle">RESTAURANT OPS</span></span></a>
         <div className="sidebar-label">Workspace</div>
         <nav aria-label="Main navigation">
           <button className="nav-item active"><LayoutDashboard size={17} /><span className="nav-label">Overview</span></button>
@@ -335,30 +338,30 @@ export default function DashboardPage() {
           {isAdmin && <button className="nav-item" onClick={exportDatabase}><ArrowDownToLine size={17} /><span className="nav-label">Export database</span></button>}
         </nav>
         <div className="sidebar-bottom">
-          <div className="shift-card"><div className="shift-card-top"><span className="online-dot" />Demo service</div><p>Signed in as {user.name}</p></div>
+          <div className="shift-card"><div className="shift-card-top"><span className="online-dot" />Live service</div><p>Signed in as {user.name}</p></div>
           <button className="logout-button" onClick={signOut}><LogOut size={15} /> Sign out</button>
           <div className="sidebar-footer">DineSync · Service made simple</div>
         </div>
       </aside>
       <main className="main-content">
         <header className="topbar">
-          <div className="breadcrumb">Workspace <span>/</span> <strong>{isAdmin ? "Admin dashboard" : "Captain workspace"}</strong></div>
-          <div className="topbar-right"><span className="live-indicator"><span className="online-dot" />Demo data</span><span className="user-chip"><span className="avatar">{user.name.split(/\s+/).map(part => part[0]).slice(0, 2).join("").toUpperCase()}</span><span className="user-chip-copy"><strong>{user.name}</strong><small>{user.role}</small></span></span></div>
+          <div className="breadcrumb">Workspace <span>/</span> <strong>Admin dashboard</strong></div>
+          <div className="topbar-right"><span className="live-indicator"><span className="online-dot" />Live updates</span><span className="user-chip"><span className="avatar">{user.name.split(/\s+/).map(part => part[0]).slice(0, 2).join("").toUpperCase()}</span><span className="user-chip-copy"><strong>{user.name}</strong><small>{user.role}</small></span></span></div>
         </header>
         <section className="page-heading">
-          <div><div className="eyebrow">{new Intl.DateTimeFormat("en", { weekday: "long", month: "long", day: "numeric" }).format(new Date())} · Interactive demo</div><h1>Good service starts here.</h1><p>Manage your floor, orders, and checkout from one place.</p></div>
+          <div><div className="eyebrow">{new Intl.DateTimeFormat("en", { weekday: "long", month: "long", day: "numeric" }).format(new Date())} · Dinner service</div><h1>Good service starts here.</h1><p>Manage your floor, orders, and checkout from one place.</p></div>
           {isAdmin && <button className="button button-primary" onClick={() => setModalTable(null)}><Plus size={15} /> Add table</button>}
         </section>
         <section className="metrics" aria-label="Live service metrics">
           <MetricCard label="Current occupancy" value={`${state.analytics.occupancy || 0}%`} note={`${occupiedCount} of ${state.tables.length} tables seated`} icon={Armchair} />
-          <MetricCard label="Demo revenue" value={formatMoney(state.analytics.liveRevenue)} note="Across sample active orders" icon={CircleDollarSign} />
+          <MetricCard label="Live revenue" value={formatMoney(state.analytics.liveRevenue)} note="Across active, unpaid orders" icon={CircleDollarSign} />
           <MetricCard label="Pending cleanups" value={state.analytics.pendingCleanups || 0} note="Tables waiting to be reset" icon={Sparkles} />
           <MetricCard label="Busiest floor" value={state.analytics.topFloor || "—"} note={`${state.analytics.topFloorOrders || 0} active ${(state.analytics.topFloorOrders || 0) === 1 ? "order" : "orders"}`} icon={Users} />
         </section>
         <div className="workspace">
           <section className="panel floor-panel" id="floor-map">
             <div className="panel-heading">
-              <div><h2 className="panel-title">Floor map</h2><p className="panel-subtitle">Select a table to manage demo service and its bill</p></div>
+              <div><h2 className="panel-title">Live floor map</h2><p className="panel-subtitle">Select a table to manage service and its bill</p></div>
               <label className="floor-filter"><span className="sr-only">Filter by floor</span><select className="floor-select" value={selectedFloor} onChange={event => setSelectedFloor(event.target.value)}><option>All floors</option>{floors.map(floor => <option key={floor}>{floor}</option>)}</select><ChevronDown size={12} /></label>
             </div>
             <div className="floor-summary"><span><strong>{filteredTables.length} tables</strong> · {selectedFloor}</span><span>{availableCount} available</span></div>
